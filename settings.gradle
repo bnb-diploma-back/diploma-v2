@@ -1,0 +1,5 @@
+rootProject.name = 'diploma'
+
+include 'launcher'
+include 'api'
+include 'library'

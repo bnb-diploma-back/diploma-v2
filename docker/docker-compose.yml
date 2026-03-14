@@ -1,0 +1,21 @@
+services:
+  discovery:
+    image: eatcodepray/bnb-diploma-discovery
+    ports:
+      - "8761:8761"
+
+  config-server:
+    image: eatcodepray/bnb-diploma-config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - CONFIG_FOLDER=/var/config-data
+    depends_on:
+      - discovery
+
+  migration:
+    image: eatcodepray/bnb-diploma-migration
+    ports:
+      - "5432:5432"
+    depends_on:
+      - config-server
