@@ -14,7 +14,7 @@ spring:
       ddl-auto: none
     open-in-view: false
   config:
-    import: optional:configserver:${CONFIG_SERVER:http://localhost:8889/}
+    import: optional:configserver:${CONFIG_SERVER:http://localhost:8888/}
 
 server:
   port: 8070
