@@ -1,11 +1,13 @@
 services:
   discovery:
+    container_name: discovery
     image: eatcodepray/bnb-diploma-discovery
     platform: linux/amd64
     ports:
       - "8761:8761"
 
   config-server:
+    container_name: config-server
     image: eatcodepray/bnb-diploma-config-server
     platform: linux/amd64
     ports:
@@ -18,9 +20,18 @@ services:
       - discovery
 
   migration:
-    image: eatcodepray/bnb-diploma-migration
+    container_name: bnb_db
+    image: eatcodepray/bnb-diploma-migration:latest
     platform: linux/amd64
     ports:
       - "5432:5432"
+    depends_on:
+      - config-server
+  test_db:
+    container_name: bnb_test_db
+    image: eatcodepray/bnb-diploma-migration:test
+    platform: linux/amd64
+    ports:
+      - "5433:5432"
     depends_on:
       - config-server
