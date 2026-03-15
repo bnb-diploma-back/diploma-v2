@@ -1,4 +1,4 @@
-package sdu.edu.kz.diploma.library.syllabus.entity;
+package sdu.edu.kz.diploma.library.model.syllabus.entity;
 
 public enum Semester {
     FALL,

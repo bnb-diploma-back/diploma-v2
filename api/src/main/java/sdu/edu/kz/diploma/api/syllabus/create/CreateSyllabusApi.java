@@ -3,14 +3,15 @@ package sdu.edu.kz.diploma.api.syllabus.create;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sdu.edu.kz.diploma.library.syllabus.entity.Syllabus;
-import sdu.edu.kz.diploma.library.syllabus.entity.WeeklyPlan;
+import sdu.edu.kz.diploma.library.model.syllabus.entity.Syllabus;
+import sdu.edu.kz.diploma.library.model.syllabus.entity.WeeklyPlan;
+import sdu.edu.kz.diploma.library.model.syllabus.repository.SyllabusRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CreateSyllabusApi {
 
-    private final CreateSyllabusRepository repository;
+    private final SyllabusRepository syllabusRepository;
 
     @Transactional
     public Long create(CreateSyllabusRequest request) {
@@ -48,7 +49,7 @@ public class CreateSyllabusApi {
             });
         }
 
-        final var saved = repository.save(syllabus);
+        final var saved = syllabusRepository.save(syllabus);
         return saved.getId();
     }
 }

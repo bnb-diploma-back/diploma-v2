@@ -1,4 +1,4 @@
-package sdu.edu.kz.diploma.library.syllabus.entity;
+package sdu.edu.kz.diploma.library.model.syllabus.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

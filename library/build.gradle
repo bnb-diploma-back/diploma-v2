@@ -12,6 +12,14 @@ dependencies {
 	jooqCodegen 'org.postgresql:postgresql'
 }
 
+sourceSets {
+	main {
+		java {
+			srcDir layout.buildDirectory.dir('generated-sources/jooq')
+		}
+	}
+}
+
 jooq {
 	configuration {
 		jdbc {
@@ -45,8 +53,12 @@ jooq {
 
 			target {
 				packageName = 'sdu.edu.kz.diploma.library.jooq'
-				directory = 'src/main/java'
+				directory = layout.buildDirectory.dir('generated-sources/jooq').get().asFile.absolutePath
 			}
 		}
 	}
+}
+
+tasks.named('compileJava') {
+	dependsOn tasks.named('jooqCodegen')
 }

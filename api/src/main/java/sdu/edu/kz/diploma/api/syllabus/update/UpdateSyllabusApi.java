@@ -3,17 +3,18 @@ package sdu.edu.kz.diploma.api.syllabus.update;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sdu.edu.kz.diploma.library.syllabus.entity.WeeklyPlan;
+import sdu.edu.kz.diploma.library.model.syllabus.entity.WeeklyPlan;
+import sdu.edu.kz.diploma.library.model.syllabus.repository.SyllabusRepository;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateSyllabusApi {
 
-    private final UpdateSyllabusRepository repository;
+    private final SyllabusRepository syllabusRepository;
 
     @Transactional
     public void update(Long id, UpdateSyllabusRequest request) {
-        final var syllabus = repository.findById(id)
+        final var syllabus = syllabusRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Syllabus not found with id: " + id));
 
         syllabus.setCourseCode(request.getCourseCode());
@@ -49,6 +50,6 @@ public class UpdateSyllabusApi {
             });
         }
 
-        repository.save(syllabus);
+        syllabusRepository.save(syllabus);
     }
 }
