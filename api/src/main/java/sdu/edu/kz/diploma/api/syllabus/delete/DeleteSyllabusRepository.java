@@ -1,31 +1,21 @@
 package sdu.edu.kz.diploma.api.syllabus.delete;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
-
-import static sdu.edu.kz.diploma.library.jooq.Tables.SYLLABI;
-import static sdu.edu.kz.diploma.library.jooq.Tables.WEEKLY_PLANS;
+import sdu.edu.kz.diploma.library.syllabus.entity.Syllabus;
 
 @Repository
 @RequiredArgsConstructor
 public class DeleteSyllabusRepository {
 
-    private final DSLContext dsl;
+    private final EntityManager entityManager;
 
-    public boolean existsById(Long id) {
-        return dsl.fetchExists(
-                dsl.selectOne().from(SYLLABI).where(SYLLABI.ID.eq(id))
-        );
+    public Syllabus findById(Long id) {
+        return entityManager.find(Syllabus.class, id);
     }
 
-    public void deleteById(Long id) {
-        dsl.deleteFrom(WEEKLY_PLANS)
-                .where(WEEKLY_PLANS.SYLLABUS_ID.eq(id))
-                .execute();
-
-        dsl.deleteFrom(SYLLABI)
-                .where(SYLLABI.ID.eq(id))
-                .execute();
+    public void delete(Syllabus syllabus) {
+        entityManager.remove(syllabus);
     }
 }
