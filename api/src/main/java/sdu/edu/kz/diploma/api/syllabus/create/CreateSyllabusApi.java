@@ -3,9 +3,9 @@ package sdu.edu.kz.diploma.api.syllabus.create;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sdu.edu.kz.diploma.library.model.syllabus.entity.Syllabus;
-import sdu.edu.kz.diploma.library.model.syllabus.entity.WeeklyPlan;
-import sdu.edu.kz.diploma.library.model.syllabus.repository.SyllabusRepository;
+import sdu.edu.kz.diploma.library.model.entity.Syllabus;
+import sdu.edu.kz.diploma.library.model.entity.WeeklyPlan;
+import sdu.edu.kz.diploma.library.model.repository.SyllabusRepository;
 
 @Service
 @RequiredArgsConstructor
