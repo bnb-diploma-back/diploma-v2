@@ -3,7 +3,7 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/migration_db
+    url: jdbc:postgresql://localhost:5432/bnb_db
     hikari:
       connection-test-query: SELECT 1
 eureka:
