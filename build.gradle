@@ -9,6 +9,10 @@ allprojects {
 	version = '0.0.1-SNAPSHOT'
 }
 
+ext {
+	set('jooq.version', '3.20.11')
+}
+
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'io.spring.dependency-management'
