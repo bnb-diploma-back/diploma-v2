@@ -1,13 +1,17 @@
 services:
   discovery:
     image: eatcodepray/bnb-diploma-discovery
+    platform: linux/amd64
     ports:
       - "8761:8761"
 
   config-server:
     image: eatcodepray/bnb-diploma-config-server
+    platform: linux/amd64
     ports:
       - "8888:8888"
+    volumes:
+      - ./config-data:/var/config-data
     environment:
       - CONFIG_FOLDER=/var/config-data
     depends_on:
@@ -15,6 +19,7 @@ services:
 
   migration:
     image: eatcodepray/bnb-diploma-migration
+    platform: linux/amd64
     ports:
       - "5432:5432"
     depends_on:
