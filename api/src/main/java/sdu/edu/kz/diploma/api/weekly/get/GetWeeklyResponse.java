@@ -32,6 +32,7 @@ public class GetWeeklyResponse {
         private String instructor;
         private Integer credits;
         private String semester;
+        private String expectedGrade;
         private List<TaskResponse> tasks;
     }
 
