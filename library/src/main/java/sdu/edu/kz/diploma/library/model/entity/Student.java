@@ -58,6 +58,10 @@ public class Student {
     @Builder.Default
     private List<StudentCareer> studentCareers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<StudentTask> studentTasks = new ArrayList<>();
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -91,5 +95,15 @@ public class Student {
     public void removeStudentCareer(StudentCareer studentCareer) {
         studentCareers.remove(studentCareer);
         studentCareer.setStudent(null);
+    }
+
+    public void addStudentTask(StudentTask studentTask) {
+        studentTasks.add(studentTask);
+        studentTask.setStudent(this);
+    }
+
+    public void removeStudentTask(StudentTask studentTask) {
+        studentTasks.remove(studentTask);
+        studentTask.setStudent(null);
     }
 }
