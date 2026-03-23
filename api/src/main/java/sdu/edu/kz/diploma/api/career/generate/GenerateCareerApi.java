@@ -22,7 +22,6 @@ public class GenerateCareerApi {
     private final DSLContext dsl;
     private final CareerAiService careerAiService;
     private final StudentRepository studentRepository;
-    private final StudentCareerRepository studentCareerRepository;
     private final ObjectMapper objectMapper;
 
     @Transactional

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import sdu.edu.kz.diploma.library.jooq.tables.pojos.StudentSyllabi;
 import sdu.edu.kz.diploma.library.jooq.tables.pojos.StudentTasks;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

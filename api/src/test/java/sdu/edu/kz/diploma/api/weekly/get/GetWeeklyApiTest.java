@@ -113,7 +113,7 @@ class GetWeeklyApiTest extends BaseTest {
         final var student = creator.student();
         final var syllabus = creator.syllabus();
 
-        final var task = creator.studentTask(
+        creator.studentTask(
                 new StudentTaskTest()
                         .student(student)
                         .syllabus(syllabus)

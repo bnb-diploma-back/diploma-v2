@@ -1,14 +1,10 @@
 package sdu.edu.kz.diploma.api.weekly.organize;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
-import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-import com.openai.models.chat.completions.ChatCompletionMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sdu.edu.kz.diploma.api.weekly.get.GetWeeklyResponse;
