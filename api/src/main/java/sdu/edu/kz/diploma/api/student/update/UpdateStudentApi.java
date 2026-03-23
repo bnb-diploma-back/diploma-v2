@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sdu.edu.kz.diploma.library.model.entity.StudentCareer;
 import sdu.edu.kz.diploma.library.model.entity.StudentSyllabus;
+import sdu.edu.kz.diploma.library.model.repository.DepartmentRepository;
+import sdu.edu.kz.diploma.library.model.repository.MajorRepository;
 import sdu.edu.kz.diploma.library.model.repository.StudentRepository;
 import sdu.edu.kz.diploma.library.model.repository.SyllabusRepository;
 
@@ -14,18 +16,30 @@ public class UpdateStudentApi {
 
     private final StudentRepository studentRepository;
     private final SyllabusRepository syllabusRepository;
+    private final DepartmentRepository departmentRepository;
+    private final MajorRepository majorRepository;
 
     @Transactional
     public void update(Long id, UpdateStudentRequest request) {
         final var student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
 
+        final var department = request.getDepartmentId() != null
+                ? departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new RuntimeException("Department not found with id: " + request.getDepartmentId()))
+                : null;
+
+        final var major = request.getMajorId() != null
+                ? majorRepository.findById(request.getMajorId())
+                    .orElseThrow(() -> new RuntimeException("Major not found with id: " + request.getMajorId()))
+                : null;
+
         student.setFirstName(request.getFirstName());
         student.setLastName(request.getLastName());
         student.setEmail(request.getEmail());
         student.setStudentId(request.getStudentId());
-        student.setDepartment(request.getDepartment());
-        student.setMajor(request.getMajor());
+        student.setDepartment(department);
+        student.setMajor(major);
         student.setEnrollmentYear(request.getEnrollmentYear());
         student.setCurrentSemester(request.getCurrentSemester());
         student.setDateOfBirth(request.getDateOfBirth());

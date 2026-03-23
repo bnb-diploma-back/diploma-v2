@@ -28,8 +28,8 @@ public class CreateStudentRequest {
     @NotBlank
     private String studentId;
 
-    private String department;
-    private String major;
+    private Long departmentId;
+    private Long majorId;
     private Integer enrollmentYear;
     private Semester currentSemester;
     private LocalDate dateOfBirth;

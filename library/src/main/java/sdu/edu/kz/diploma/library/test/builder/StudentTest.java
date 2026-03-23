@@ -1,5 +1,7 @@
 package sdu.edu.kz.diploma.library.test.builder;
 
+import sdu.edu.kz.diploma.library.model.entity.Department;
+import sdu.edu.kz.diploma.library.model.entity.Major;
 import sdu.edu.kz.diploma.library.model.entity.Student;
 import sdu.edu.kz.diploma.library.test.Randomizer;
 
@@ -13,8 +15,8 @@ public class StudentTest {
     private String lastName = r.name();
     private String email = r.email();
     private String studentId = r.code();
-    private String department = r.name();
-    private String major = r.name();
+    private Department department;
+    private Major major;
     private int enrollmentYear = r.intBetween(2020, 2026);
     private LocalDate dateOfBirth = LocalDate.now().minusYears(r.intBetween(18, 25));
     private String phone = r.str(10);
@@ -40,12 +42,12 @@ public class StudentTest {
         return this;
     }
 
-    public StudentTest department(String department) {
+    public StudentTest department(Department department) {
         this.department = department;
         return this;
     }
 
-    public StudentTest major(String major) {
+    public StudentTest major(Major major) {
         this.major = major;
         return this;
     }

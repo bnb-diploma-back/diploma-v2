@@ -42,7 +42,7 @@ public class StudentController {
             }
     )
     public ResponseEntity<GetStudentResponse> getById(
-            @Parameter(description = "Student database ID", example = "1") @PathVariable Long id) {
+            @Parameter(description = "Student database ID", example = "1") @PathVariable("id") Long id) {
         return ResponseEntity.ok(studentDelegate.findById(id));
     }
 
@@ -56,7 +56,7 @@ public class StudentController {
             }
     )
     public ResponseEntity<GetStudentResponse> getByStudentId(
-            @Parameter(description = "University student ID code", example = "SDU_ABC123") @PathVariable String studentId) {
+            @Parameter(description = "University student ID code", example = "SDU_ABC123") @PathVariable("studentId") String studentId) {
         return ResponseEntity.ok(studentDelegate.findByStudentId(studentId));
     }
 
@@ -83,7 +83,7 @@ public class StudentController {
             }
     )
     public ResponseEntity<Void> update(
-            @Parameter(description = "Student database ID") @PathVariable Long id,
+            @Parameter(description = "Student database ID") @PathVariable("id") Long id,
             @Valid @RequestBody UpdateStudentRequest request) {
         studentDelegate.update(id, request);
         return ResponseEntity.ok().build();
@@ -99,7 +99,7 @@ public class StudentController {
             }
     )
     public ResponseEntity<Void> delete(
-            @Parameter(description = "Student database ID") @PathVariable Long id) {
+            @Parameter(description = "Student database ID") @PathVariable("id") Long id) {
         studentDelegate.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -37,9 +37,13 @@ public class Student {
     @Column(nullable = false, unique = true)
     private String studentId;
 
-    private String department;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 
-    private String major;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
+    private Major major;
 
     private Integer enrollmentYear;
 

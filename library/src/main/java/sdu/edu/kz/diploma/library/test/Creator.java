@@ -86,4 +86,28 @@ public class Creator extends AbstractEntityAction {
     public WeeklyOrganizer weeklyOrganizer(WeeklyOrganizerTest builder) {
         return weeklyOrganizerTestRepository.save(builder.build());
     }
+
+    public Department department() {
+        return departmentTestRepository.save(new DepartmentTest().build());
+    }
+
+    public Department department(String name) {
+        return departmentTestRepository.save(new DepartmentTest().name(name).build());
+    }
+
+    public Department department(DepartmentTest builder) {
+        return departmentTestRepository.save(builder.build());
+    }
+
+    public Major major(Department department) {
+        return majorTestRepository.save(new MajorTest().department(department).build());
+    }
+
+    public Major major(Department department, String name) {
+        return majorTestRepository.save(new MajorTest().department(department).name(name).build());
+    }
+
+    public Major major(MajorTest builder) {
+        return majorTestRepository.save(builder.build());
+    }
 }

@@ -31,8 +31,8 @@ public class WeeklyController {
             }
     )
     public ResponseEntity<GetWeeklyResponse> getByStudentAndWeek(
-            @Parameter(description = "Student database ID", example = "1") @PathVariable Long studentId,
-            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable Integer weekNumber) {
+            @Parameter(description = "Student database ID", example = "1") @PathVariable("studentId") Long studentId,
+            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
         return ResponseEntity.ok(weeklyDelegate.findByStudentAndWeek(studentId, weekNumber));
     }
 
@@ -56,8 +56,8 @@ public class WeeklyController {
             }
     )
     public ResponseEntity<OrganizeWeeklyResponse> organize(
-            @Parameter(description = "Student database ID", example = "1") @PathVariable Long studentId,
-            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable Integer weekNumber) {
+            @Parameter(description = "Student database ID", example = "1") @PathVariable("studentId") Long studentId,
+            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
         return ResponseEntity.ok(weeklyDelegate.organize(studentId, weekNumber));
     }
 
@@ -74,8 +74,8 @@ public class WeeklyController {
             }
     )
     public ResponseEntity<OrganizeWeeklyResponse> getOrganized(
-            @Parameter(description = "Student database ID", example = "1") @PathVariable Long studentId,
-            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable Integer weekNumber) {
+            @Parameter(description = "Student database ID", example = "1") @PathVariable("studentId") Long studentId,
+            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
         return ResponseEntity.ok(weeklyDelegate.getOrganized(studentId, weekNumber));
     }
 }

@@ -61,6 +61,20 @@ public class GetStudentRepository {
                 .fetchInto(StudentCareers.class);
     }
 
+    private String fetchDepartmentName(Long departmentId) {
+        final var dept = dsl.selectFrom(DEPARTMENTS)
+                .where(DEPARTMENTS.ID.eq(departmentId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Departments.class);
+        return dept != null ? dept.name() : null;
+    }
+
+    private String fetchMajorName(Long majorId) {
+        final var major = dsl.selectFrom(MAJORS)
+                .where(MAJORS.ID.eq(majorId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Majors.class);
+        return major != null ? major.name() : null;
+    }
+
     private GetStudentResponse toResponse(sdu.edu.kz.diploma.library.jooq.tables.pojos.Students s,
                                           List<StudentSyllabi> syllabi,
                                           List<StudentCareers> careers) {
@@ -70,8 +84,10 @@ public class GetStudentRepository {
                 .lastName(s.lastName())
                 .email(s.email())
                 .studentId(s.studentId())
-                .department(s.department())
-                .major(s.major())
+                .departmentId(s.departmentId())
+                .departmentName(s.departmentId() != null ? fetchDepartmentName(s.departmentId()) : null)
+                .majorId(s.majorId())
+                .majorName(s.majorId() != null ? fetchMajorName(s.majorId()) : null)
                 .enrollmentYear(s.enrollmentYear())
                 .currentSemester(s.currentSemester())
                 .dateOfBirth(s.dateOfBirth())

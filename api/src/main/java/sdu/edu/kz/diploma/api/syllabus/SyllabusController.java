@@ -42,7 +42,7 @@ public class SyllabusController {
             }
     )
     public ResponseEntity<GetSyllabusResponse> getById(
-            @Parameter(description = "Syllabus database ID", example = "1") @PathVariable Long id) {
+            @Parameter(description = "Syllabus database ID", example = "1") @PathVariable("id") Long id) {
         return ResponseEntity.ok(syllabusDelegate.findById(id));
     }
 
@@ -56,7 +56,7 @@ public class SyllabusController {
             }
     )
     public ResponseEntity<GetSyllabusResponse> getByCourseCode(
-            @Parameter(description = "Course code", example = "CS201") @PathVariable String courseCode) {
+            @Parameter(description = "Course code", example = "CS201") @PathVariable("courseCode") String courseCode) {
         return ResponseEntity.ok(syllabusDelegate.findByCourseCode(courseCode));
     }
 
@@ -83,7 +83,7 @@ public class SyllabusController {
             }
     )
     public ResponseEntity<Void> update(
-            @Parameter(description = "Syllabus database ID") @PathVariable Long id,
+            @Parameter(description = "Syllabus database ID") @PathVariable("id") Long id,
             @Valid @RequestBody UpdateSyllabusRequest request) {
         syllabusDelegate.update(id, request);
         return ResponseEntity.ok().build();
@@ -99,7 +99,7 @@ public class SyllabusController {
             }
     )
     public ResponseEntity<Void> delete(
-            @Parameter(description = "Syllabus database ID") @PathVariable Long id) {
+            @Parameter(description = "Syllabus database ID") @PathVariable("id") Long id) {
         syllabusDelegate.delete(id);
         return ResponseEntity.noContent().build();
     }
