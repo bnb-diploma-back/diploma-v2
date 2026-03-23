@@ -8,6 +8,9 @@ import sdu.edu.kz.diploma.api.dictionary.create.CreateMajorRequest;
 import sdu.edu.kz.diploma.api.dictionary.delete.DeleteDictionaryApi;
 import sdu.edu.kz.diploma.api.dictionary.get.GetDictionaryApi;
 import sdu.edu.kz.diploma.api.dictionary.get.GetDictionaryResponse;
+import sdu.edu.kz.diploma.api.dictionary.update.UpdateDepartmentRequest;
+import sdu.edu.kz.diploma.api.dictionary.update.UpdateDictionaryApi;
+import sdu.edu.kz.diploma.api.dictionary.update.UpdateMajorRequest;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class DictionaryDelegate {
 
     private final GetDictionaryApi getDictionaryApi;
     private final CreateDictionaryApi createDictionaryApi;
+    private final UpdateDictionaryApi updateDictionaryApi;
     private final DeleteDictionaryApi deleteDictionaryApi;
 
     public List<GetDictionaryResponse.DepartmentResponse> findAllDepartments() {
@@ -45,6 +49,14 @@ public class DictionaryDelegate {
 
     public Long createMajor(CreateMajorRequest request) {
         return createDictionaryApi.createMajor(request);
+    }
+
+    public void updateDepartment(Long id, UpdateDepartmentRequest request) {
+        updateDictionaryApi.updateDepartment(id, request);
+    }
+
+    public void updateMajor(Long id, UpdateMajorRequest request) {
+        updateDictionaryApi.updateMajor(id, request);
     }
 
     public void deleteDepartment(Long id) {

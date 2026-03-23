@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import sdu.edu.kz.diploma.api.dictionary.create.CreateDepartmentRequest;
 import sdu.edu.kz.diploma.api.dictionary.create.CreateMajorRequest;
 import sdu.edu.kz.diploma.api.dictionary.get.GetDictionaryResponse;
+import sdu.edu.kz.diploma.api.dictionary.update.UpdateDepartmentRequest;
+import sdu.edu.kz.diploma.api.dictionary.update.UpdateMajorRequest;
 
 import java.util.List;
 
@@ -56,6 +58,22 @@ public class DictionaryController {
     )
     public ResponseEntity<Long> createDepartment(@Valid @RequestBody CreateDepartmentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(dictionaryDelegate.createDepartment(request));
+    }
+
+    @PutMapping("/departments/{id}")
+    @Operation(
+            summary = "Update a department",
+            description = "Updates department code, name, and description",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Department updated"),
+                    @ApiResponse(responseCode = "500", description = "Department not found")
+            }
+    )
+    public ResponseEntity<Void> updateDepartment(
+            @Parameter(description = "Department ID") @PathVariable("id") Long id,
+            @Valid @RequestBody UpdateDepartmentRequest request) {
+        dictionaryDelegate.updateDepartment(id, request);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/departments/{id}")
@@ -117,6 +135,22 @@ public class DictionaryController {
     )
     public ResponseEntity<Long> createMajor(@Valid @RequestBody CreateMajorRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(dictionaryDelegate.createMajor(request));
+    }
+
+    @PutMapping("/majors/{id}")
+    @Operation(
+            summary = "Update a major",
+            description = "Updates major code, name, description, and can reassign to a different department",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Major updated"),
+                    @ApiResponse(responseCode = "500", description = "Major or department not found")
+            }
+    )
+    public ResponseEntity<Void> updateMajor(
+            @Parameter(description = "Major ID") @PathVariable("id") Long id,
+            @Valid @RequestBody UpdateMajorRequest request) {
+        dictionaryDelegate.updateMajor(id, request);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/majors/{id}")
