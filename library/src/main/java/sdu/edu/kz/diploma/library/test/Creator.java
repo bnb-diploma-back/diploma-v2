@@ -24,7 +24,12 @@ public class Creator extends AbstractEntityAction {
     }
 
     public Student student() {
-        return studentTestRepository.save(new StudentTest().build());
+        final var department = this.department();
+        final var major = this.major(department);
+        final var student = new StudentTest().build();
+        student.setMajor(major);
+        student.setDepartment(department);
+        return studentTestRepository.save(student);
     }
 
     public Student student(StudentTest builder) {

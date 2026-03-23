@@ -23,13 +23,15 @@ class CreateStudentApiTest extends BaseTest {
 
     @Test
     void create_returnsStudentId() {
+        final var department = creator.department();
+        final var major = creator.major(department);
         final var request = CreateStudentRequest.builder()
                 .firstName(randomizer.name())
                 .lastName(randomizer.name())
                 .email(randomizer.email())
                 .studentId(randomizer.code())
-                .department(randomizer.name())
-                .major(randomizer.name())
+                .departmentId(department.getId())
+                .majorId(major.getId())
                 .enrollmentYear(2025)
                 .currentSemester(Semester.FALL)
                 .dateOfBirth(LocalDate.of(2002, 5, 15))

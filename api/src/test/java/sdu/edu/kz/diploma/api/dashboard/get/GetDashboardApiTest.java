@@ -39,8 +39,8 @@ class GetDashboardApiTest extends BaseTest {
         assertThat(result.getProfile().getFirstName()).isEqualTo(student.getFirstName());
         assertThat(result.getProfile().getLastName()).isEqualTo(student.getLastName());
         assertThat(result.getProfile().getEmail()).isEqualTo(student.getEmail());
-        assertThat(result.getProfile().getDepartment()).isEqualTo(student.getDepartment());
-        assertThat(result.getProfile().getMajor()).isEqualTo(student.getMajor());
+        assertThat(result.getProfile().getDepartmentId()).isEqualTo(student.getDepartment().getId());
+        assertThat(result.getProfile().getMajorId()).isEqualTo(student.getMajor().getId());
     }
 
     @Test

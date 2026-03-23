@@ -58,8 +58,8 @@ public class GenerateCareerApi {
 
         final var aiInput = CareerAiInput.builder()
                 .studentName(student.firstName() + " " + student.lastName())
-                .department(student.department())
-                .major(student.major())
+                .department(resolveDepartmentName(student.departmentId()))
+                .major(resolveMajorName(student.majorId()))
                 .enrollmentYear(student.enrollmentYear())
                 .currentSemester(student.currentSemester())
                 .courses(courses)
@@ -72,7 +72,7 @@ public class GenerateCareerApi {
 
         response.setStudentId(studentId);
         response.setStudentName(student.firstName() + " " + student.lastName());
-        response.setMajor(student.major());
+        response.setMajor(resolveMajorName(student.majorId()));
         response.setGeneratedAt(LocalDateTime.now());
         return response;
     }
@@ -94,6 +94,22 @@ public class GenerateCareerApi {
         });
 
         studentRepository.save(studentEntity);
+    }
+
+    private String resolveDepartmentName(Long departmentId) {
+        if (departmentId == null) return null;
+        final var dept = dsl.selectFrom(DEPARTMENTS)
+                .where(DEPARTMENTS.ID.eq(departmentId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Departments.class);
+        return dept != null ? dept.name() : null;
+    }
+
+    private String resolveMajorName(Long majorId) {
+        if (majorId == null) return null;
+        final var major = dsl.selectFrom(MAJORS)
+                .where(MAJORS.ID.eq(majorId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Majors.class);
+        return major != null ? major.name() : null;
     }
 
     private GenerateCareerResponse parseResponse(String aiResponseJson) {

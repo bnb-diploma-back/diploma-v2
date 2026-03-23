@@ -39,8 +39,10 @@ public class GetDashboardRepository {
                 .lastName(student.lastName())
                 .email(student.email())
                 .studentId(student.studentId())
-                .department(student.department())
-                .major(student.major())
+                .departmentId(student.departmentId())
+                .departmentName(student.departmentId() != null ? resolveDepartmentName(student.departmentId()) : null)
+                .majorId(student.majorId())
+                .majorName(student.majorId() != null ? resolveMajorName(student.majorId()) : null)
                 .enrollmentYear(student.enrollmentYear())
                 .currentSemester(student.currentSemester())
                 .build();
@@ -61,6 +63,20 @@ public class GetDashboardRepository {
                 .topCareers(topCareers)
                 .todaySchedule(todaySchedule)
                 .build());
+    }
+
+    private String resolveDepartmentName(Long departmentId) {
+        final var dept = dsl.selectFrom(DEPARTMENTS)
+                .where(DEPARTMENTS.ID.eq(departmentId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Departments.class);
+        return dept != null ? dept.name() : null;
+    }
+
+    private String resolveMajorName(Long majorId) {
+        final var major = dsl.selectFrom(MAJORS)
+                .where(MAJORS.ID.eq(majorId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Majors.class);
+        return major != null ? major.name() : null;
     }
 
     private GetDashboardResponse.AcademicOverviewResponse buildAcademicOverview(Long studentId) {

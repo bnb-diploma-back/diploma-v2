@@ -31,8 +31,10 @@ public class GetDashboardResponse {
         private String lastName;
         private String email;
         private String studentId;
-        private String department;
-        private String major;
+        private Long departmentId;
+        private String departmentName;
+        private Long majorId;
+        private String majorName;
         private Integer enrollmentYear;
         private String currentSemester;
     }

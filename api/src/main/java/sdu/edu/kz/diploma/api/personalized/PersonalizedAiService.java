@@ -90,6 +90,22 @@ public class PersonalizedAiService {
         }
     }
 
+    private String resolveDepartmentName(Long departmentId) {
+        if (departmentId == null) return "N/A";
+        final var dept = dsl.selectFrom(DEPARTMENTS)
+                .where(DEPARTMENTS.ID.eq(departmentId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Departments.class);
+        return dept != null ? dept.name() : "N/A";
+    }
+
+    private String resolveMajorName(Long majorId) {
+        if (majorId == null) return "N/A";
+        final var major = dsl.selectFrom(MAJORS)
+                .where(MAJORS.ID.eq(majorId))
+                .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Majors.class);
+        return major != null ? major.name() : "N/A";
+    }
+
     private String buildStudentContext(Long studentId) {
         final var student = dsl.selectFrom(STUDENTS)
                 .where(STUDENTS.ID.eq(studentId))
@@ -135,7 +151,8 @@ public class PersonalizedAiService {
                 %s
                 """.formatted(
                 student.firstName(), student.lastName(),
-                student.department(), student.major(),
+                resolveDepartmentName(student.departmentId()),
+                resolveMajorName(student.majorId()),
                 student.currentSemester(), student.enrollmentYear(),
                 coursesInfo.isEmpty() ? "No courses enrolled" : coursesInfo,
                 careersInfo.isEmpty() ? "No career cards generated yet" : careersInfo
