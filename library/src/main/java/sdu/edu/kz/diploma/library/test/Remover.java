@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 public class Remover extends AbstractEntityAction {
 
     public void all() {
+        weeklyOrganizerTestRepository.deleteAll();
+        studentTaskTestRepository.deleteAll();
         studentSyllabusTestRepository.deleteAll();
         studentCareerTestRepository.deleteAll();
         studentTestRepository.deleteAll();
@@ -19,5 +21,13 @@ public class Remover extends AbstractEntityAction {
 
     public void studentById(Long id) {
         studentTestRepository.deleteById(id);
+    }
+
+    public void studentTaskById(Long id) {
+        studentTaskTestRepository.deleteById(id);
+    }
+
+    public void weeklyOrganizerById(Long id) {
+        weeklyOrganizerTestRepository.deleteById(id);
     }
 }

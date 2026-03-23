@@ -1,14 +1,8 @@
 package sdu.edu.kz.diploma.library.test;
 
 import org.springframework.stereotype.Component;
-import sdu.edu.kz.diploma.library.model.entity.Student;
-import sdu.edu.kz.diploma.library.model.entity.StudentCareer;
-import sdu.edu.kz.diploma.library.model.entity.StudentSyllabus;
-import sdu.edu.kz.diploma.library.model.entity.Syllabus;
-import sdu.edu.kz.diploma.library.test.builder.StudentCareerTest;
-import sdu.edu.kz.diploma.library.test.builder.StudentSyllabusTest;
-import sdu.edu.kz.diploma.library.test.builder.StudentTest;
-import sdu.edu.kz.diploma.library.test.builder.SyllabusTest;
+import sdu.edu.kz.diploma.library.model.entity.*;
+import sdu.edu.kz.diploma.library.test.builder.*;
 
 @Component
 public class Creator extends AbstractEntityAction {
@@ -59,5 +53,37 @@ public class Creator extends AbstractEntityAction {
         return studentCareerTestRepository.save(
                 new StudentCareerTest().student(student).profession(profession).build()
         );
+    }
+
+    public StudentTask studentTask(Student student, Syllabus syllabus) {
+        return studentTaskTestRepository.save(
+                new StudentTaskTest().student(student).syllabus(syllabus).build()
+        );
+    }
+
+    public StudentTask studentTask(Student student, Syllabus syllabus, int weekNumber) {
+        return studentTaskTestRepository.save(
+                new StudentTaskTest().student(student).syllabus(syllabus).weekNumber(weekNumber).build()
+        );
+    }
+
+    public StudentTask studentTask(StudentTaskTest builder) {
+        return studentTaskTestRepository.save(builder.build());
+    }
+
+    public WeeklyOrganizer weeklyOrganizer(Student student, int weekNumber) {
+        return weeklyOrganizerTestRepository.save(
+                new WeeklyOrganizerTest().student(student).weekNumber(weekNumber).build()
+        );
+    }
+
+    public WeeklyOrganizer weeklyOrganizer(Student student, int weekNumber, String aiResponse) {
+        return weeklyOrganizerTestRepository.save(
+                new WeeklyOrganizerTest().student(student).weekNumber(weekNumber).aiResponse(aiResponse).build()
+        );
+    }
+
+    public WeeklyOrganizer weeklyOrganizer(WeeklyOrganizerTest builder) {
+        return weeklyOrganizerTestRepository.save(builder.build());
     }
 }
