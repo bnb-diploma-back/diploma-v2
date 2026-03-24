@@ -31,4 +31,10 @@ public abstract class AbstractEntityAction {
 
     @Autowired
     protected MajorTestRepository majorTestRepository;
+
+    @Autowired
+    protected UserTestRepository userTestRepository;
+
+    @Autowired
+    protected SessionTestRepository sessionTestRepository;
 }

@@ -18,7 +18,6 @@ public class WeeklyAiService {
     private final ObjectMapper objectMapper;
 
     public String generateOrganizer(GetWeeklyResponse weeklyData) {
-        final var client = OpenAIOkHttpClient.fromEnv();
 
         final var tasksJson = toJson(weeklyData);
 
@@ -101,6 +100,9 @@ public class WeeklyAiService {
                 """;
 
         final var userMessage = "Here is the student's weekly task data:\n" + tasksJson;
+
+
+        final var client = OpenAIOkHttpClient.fromEnv();
 
         final var completion = client.chat().completions().create(
                 ChatCompletionCreateParams.builder()

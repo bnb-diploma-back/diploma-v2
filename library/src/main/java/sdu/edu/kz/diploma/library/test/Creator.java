@@ -115,4 +115,16 @@ public class Creator extends AbstractEntityAction {
     public Major major(MajorTest builder) {
         return majorTestRepository.save(builder.build());
     }
+
+    public User user() {
+        return userTestRepository.save(new UserTest().build());
+    }
+
+    public User user(UserTest builder) {
+        return userTestRepository.save(builder.build());
+    }
+
+    public User user(Student student) {
+        return userTestRepository.save(new UserTest().student(student).build());
+    }
 }
