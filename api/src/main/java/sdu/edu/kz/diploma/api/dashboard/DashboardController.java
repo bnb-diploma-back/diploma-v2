@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sdu.edu.kz.diploma.api.auth.CurrentUser;
 import sdu.edu.kz.diploma.api.dashboard.get.GetDashboardResponse;
 
 @RestController
@@ -39,5 +40,19 @@ public class DashboardController {
             @Parameter(description = "Student database ID", example = "1") @PathVariable Long studentId,
             @Parameter(description = "Current academic week number (1-15)", example = "3") @RequestParam(defaultValue = "1") Integer week) {
         return ResponseEntity.ok(dashboardDelegate.findByStudentId(studentId, week));
+    }
+
+    @GetMapping("/me")
+    @Operation(
+            summary = "Get current user's dashboard",
+            description = "Same as GET /students/{id} but uses the authenticated user's linked student profile automatically.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Dashboard data retrieved"),
+                    @ApiResponse(responseCode = "500", description = "User not linked to a student profile")
+            }
+    )
+    public ResponseEntity<GetDashboardResponse> getMyDashboard(
+            @Parameter(description = "Current academic week number (1-15)", example = "3") @RequestParam(defaultValue = "1") Integer week) {
+        return ResponseEntity.ok(dashboardDelegate.findByStudentId(CurrentUser.studentId(), week));
     }
 }

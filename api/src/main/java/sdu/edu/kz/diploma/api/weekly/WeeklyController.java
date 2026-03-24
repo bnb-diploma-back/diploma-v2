@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sdu.edu.kz.diploma.api.auth.CurrentUser;
 import sdu.edu.kz.diploma.api.weekly.get.GetWeeklyResponse;
 import sdu.edu.kz.diploma.api.weekly.organize.OrganizeWeeklyResponse;
 
@@ -77,5 +78,44 @@ public class WeeklyController {
             @Parameter(description = "Student database ID", example = "1") @PathVariable("studentId") Long studentId,
             @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
         return ResponseEntity.ok(weeklyDelegate.getOrganized(studentId, weekNumber));
+    }
+
+    @GetMapping("/me/weeks/{weekNumber}")
+    @Operation(
+            summary = "Get my weekly tasks",
+            description = "Same as GET /students/{id}/weeks/{week} but uses the current user's student profile.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Weekly tasks retrieved")
+            }
+    )
+    public ResponseEntity<GetWeeklyResponse> getMyWeek(
+            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
+        return ResponseEntity.ok(weeklyDelegate.findByStudentAndWeek(CurrentUser.studentId(), weekNumber));
+    }
+
+    @PostMapping("/me/weeks/{weekNumber}/organize")
+    @Operation(
+            summary = "Generate my AI weekly organizer",
+            description = "Same as POST /students/{id}/weeks/{week}/organize but uses the current user's student profile.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Organizer generated and saved")
+            }
+    )
+    public ResponseEntity<OrganizeWeeklyResponse> organizeMyWeek(
+            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
+        return ResponseEntity.ok(weeklyDelegate.organize(CurrentUser.studentId(), weekNumber));
+    }
+
+    @GetMapping("/me/weeks/{weekNumber}/organize")
+    @Operation(
+            summary = "Get my saved AI weekly organizer",
+            description = "Same as GET /students/{id}/weeks/{week}/organize but uses the current user's student profile.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Saved organizer retrieved")
+            }
+    )
+    public ResponseEntity<OrganizeWeeklyResponse> getMyOrganized(
+            @Parameter(description = "Academic week number (1-15)", example = "3") @PathVariable("weekNumber") Integer weekNumber) {
+        return ResponseEntity.ok(weeklyDelegate.getOrganized(CurrentUser.studentId(), weekNumber));
     }
 }

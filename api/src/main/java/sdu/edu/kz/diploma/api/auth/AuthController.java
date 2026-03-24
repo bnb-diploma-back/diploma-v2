@@ -106,4 +106,24 @@ public class AuthController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/me")
+    @Operation(
+            summary = "Get current user info",
+            description = "Returns the authenticated user's profile, role, and linked studentId. Use this after login to populate the frontend.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Current user info"),
+                    @ApiResponse(responseCode = "401", description = "Not authenticated")
+            }
+    )
+    public ResponseEntity<AuthResponse> me(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(AuthResponse.builder()
+                .userId(user.getId())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .role(user.getRole().name())
+                .studentId(user.getStudent() != null ? user.getStudent().getId() : null)
+                .build());
+    }
 }

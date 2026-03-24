@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sdu.edu.kz.diploma.api.auth.CurrentUser;
 import sdu.edu.kz.diploma.api.career.generate.GenerateCareerResponse;
 import sdu.edu.kz.diploma.api.career.get.GetCareerResponse;
 
@@ -60,5 +61,29 @@ public class CareerController {
     public ResponseEntity<GetCareerResponse> getByStudentId(
             @Parameter(description = "Student database ID", example = "1") @PathVariable Long studentId) {
         return ResponseEntity.ok(careerDelegate.findByStudentId(studentId));
+    }
+
+    @PostMapping("/me/generate")
+    @Operation(
+            summary = "Generate my AI career cards",
+            description = "Same as POST /students/{id}/generate but uses the current user's student profile.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Career cards generated")
+            }
+    )
+    public ResponseEntity<GenerateCareerResponse> generateMy() {
+        return ResponseEntity.ok(careerDelegate.generate(CurrentUser.studentId()));
+    }
+
+    @GetMapping("/me")
+    @Operation(
+            summary = "Get my saved career cards",
+            description = "Same as GET /students/{id} but uses the current user's student profile.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Career cards retrieved")
+            }
+    )
+    public ResponseEntity<GetCareerResponse> getMy() {
+        return ResponseEntity.ok(careerDelegate.findByStudentId(CurrentUser.studentId()));
     }
 }
