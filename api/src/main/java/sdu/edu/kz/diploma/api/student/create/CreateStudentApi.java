@@ -3,13 +3,16 @@ package sdu.edu.kz.diploma.api.student.create;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import sdu.edu.kz.diploma.library.model.entity.Student;
 import sdu.edu.kz.diploma.library.model.entity.StudentCareer;
 import sdu.edu.kz.diploma.library.model.entity.StudentSyllabus;
+import sdu.edu.kz.diploma.library.model.entity.User;
 import sdu.edu.kz.diploma.library.model.repository.DepartmentRepository;
 import sdu.edu.kz.diploma.library.model.repository.MajorRepository;
 import sdu.edu.kz.diploma.library.model.repository.StudentRepository;
 import sdu.edu.kz.diploma.library.model.repository.SyllabusRepository;
+import sdu.edu.kz.diploma.library.model.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class CreateStudentApi {
     private final SyllabusRepository syllabusRepository;
     private final DepartmentRepository departmentRepository;
     private final MajorRepository majorRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long create(CreateStudentRequest request) {
@@ -71,6 +75,22 @@ public class CreateStudentApi {
         }
 
         final var saved = studentRepository.save(student);
+
+        bindCurrentUser(saved);
+
         return saved.getId();
+    }
+
+    private void bindCurrentUser(Student student) {
+        final var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof User currentUser) {
+            if (currentUser.getStudent() == null) {
+                final var user = userRepository.findById(currentUser.getId()).orElse(null);
+                if (user != null) {
+                    user.setStudent(student);
+                    userRepository.save(user);
+                }
+            }
+        }
     }
 }
