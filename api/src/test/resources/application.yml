@@ -9,6 +9,9 @@ spring:
       ddl-auto: none
     open-in-view: false
 
+openai:
+  api-key: test-key
+
 jwt:
   secret: test-secret-key-that-is-at-least-256-bits-long-for-hs256-algorithm
   expiration: 86400000

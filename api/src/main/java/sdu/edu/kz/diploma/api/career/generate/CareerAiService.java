@@ -5,17 +5,25 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class CareerAiService {
 
     private final ObjectMapper objectMapper;
+    private final String openaiApiKey;
+
+    public CareerAiService(ObjectMapper objectMapper,
+                           @Value("${openai.api-key}") String openaiApiKey) {
+        this.objectMapper = objectMapper;
+        this.openaiApiKey = openaiApiKey;
+    }
 
     public String generateCareerCards(CareerAiInput input) {
-        final var client = OpenAIOkHttpClient.fromEnv();
+        final var client = OpenAIOkHttpClient.builder()
+                .apiKey(openaiApiKey)
+                .build();
 
         final var inputJson = toJson(input);
 

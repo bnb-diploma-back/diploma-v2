@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 public class Remover extends AbstractEntityAction {
 
     public void all() {
+        chatHistoryTestRepository.deleteAll();
         sessionTestRepository.deleteAll();
         userTestRepository.deleteAll();
         weeklyOrganizerTestRepository.deleteAll();

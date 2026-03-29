@@ -11,5 +11,5 @@ public class ChatMessage {
 
     private Long studentId;
     private String message;
-    private String context;
+    private String sessionId;
 }

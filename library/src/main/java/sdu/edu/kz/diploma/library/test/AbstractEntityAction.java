@@ -37,4 +37,7 @@ public abstract class AbstractEntityAction {
 
     @Autowired
     protected SessionTestRepository sessionTestRepository;
+
+    @Autowired
+    protected ChatHistoryTestRepository chatHistoryTestRepository;
 }

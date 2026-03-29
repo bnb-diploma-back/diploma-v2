@@ -5,17 +5,23 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sdu.edu.kz.diploma.api.weekly.get.GetWeeklyResponse;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class WeeklyAiService {
 
     private final ObjectMapper objectMapper;
+    private final String openaiApiKey;
+
+    public WeeklyAiService(ObjectMapper objectMapper,
+                           @Value("${openai.api-key}") String openaiApiKey) {
+        this.objectMapper = objectMapper;
+        this.openaiApiKey = openaiApiKey;
+    }
 
     public String generateOrganizer(GetWeeklyResponse weeklyData) {
 
@@ -102,7 +108,9 @@ public class WeeklyAiService {
         final var userMessage = "Here is the student's weekly task data:\n" + tasksJson;
 
 
-        final var client = OpenAIOkHttpClient.fromEnv();
+        final var client = OpenAIOkHttpClient.builder()
+                .apiKey(openaiApiKey)
+                .build();
 
         final var completion = client.chat().completions().create(
                 ChatCompletionCreateParams.builder()

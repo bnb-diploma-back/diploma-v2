@@ -1,34 +1,63 @@
 package sdu.edu.kz.diploma.api.personalized;
 
-import tools.jackson.databind.ObjectMapper;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionSystemMessageParam;
 import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
-import lombok.RequiredArgsConstructor;
+import com.openai.models.chat.completions.ChatCompletionAssistantMessageParam;
 import org.jooq.DSLContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import sdu.edu.kz.diploma.library.jooq.tables.pojos.StudentSyllabi;
+import sdu.edu.kz.diploma.library.model.entity.ChatHistory;
+import sdu.edu.kz.diploma.library.model.repository.ChatHistoryRepository;
+import sdu.edu.kz.diploma.library.model.repository.StudentRepository;
 
 import java.util.stream.Collectors;
 
 import static sdu.edu.kz.diploma.library.jooq.Tables.*;
 
 @Service
-@RequiredArgsConstructor
 public class PersonalizedAiService {
 
     private final DSLContext dsl;
-    private final ObjectMapper objectMapper;
     private final SimpMessagingTemplate messagingTemplate;
+    private final ChatHistoryRepository chatHistoryRepository;
+    private final StudentRepository studentRepository;
+    private final String openaiApiKey;
+
+    public PersonalizedAiService(DSLContext dsl,
+                                 SimpMessagingTemplate messagingTemplate,
+                                 ChatHistoryRepository chatHistoryRepository,
+                                 StudentRepository studentRepository,
+                                 @Value("${openai.api-key}") String openaiApiKey) {
+        this.dsl = dsl;
+        this.messagingTemplate = messagingTemplate;
+        this.chatHistoryRepository = chatHistoryRepository;
+        this.studentRepository = studentRepository;
+        this.openaiApiKey = openaiApiKey;
+    }
 
     @Async
     public void chat(Long studentId, String userMessage, String sessionId) {
+        final var destination = "/topic/chat/" + sessionId;
+
         try {
+            final var student = studentRepository.findById(studentId)
+                    .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+
+            chatHistoryRepository.save(ChatHistory.builder()
+                    .student(student)
+                    .role("USER")
+                    .content(userMessage)
+                    .build());
+
             final var studentContext = buildStudentContext(studentId);
-            final var client = OpenAIOkHttpClient.fromEnv();
+            final var client = OpenAIOkHttpClient.builder()
+                    .apiKey(openaiApiKey)
+                    .build();
 
             final var systemPrompt = """
                     You are a personalized AI academic assistant for a university student.
@@ -43,18 +72,33 @@ public class PersonalizedAiService {
                     Student context:
                     """ + studentContext;
 
-            final var stream = client.chat().completions().createStreaming(
-                    ChatCompletionCreateParams.builder()
-                            .model("gpt-4o")
-                            .maxCompletionTokens(2048)
-                            .addMessage(ChatCompletionSystemMessageParam.builder()
-                                    .content(systemPrompt)
-                                    .build())
-                            .addMessage(ChatCompletionUserMessageParam.builder()
-                                    .content(userMessage)
-                                    .build())
-                            .build()
-            );
+            final var paramsBuilder = ChatCompletionCreateParams.builder()
+                    .model("gpt-4o")
+                    .maxCompletionTokens(2048)
+                    .addMessage(ChatCompletionSystemMessageParam.builder()
+                            .content(systemPrompt)
+                            .build());
+
+            final var history = chatHistoryRepository.findByStudentIdOrderByCreatedAtAsc(studentId);
+            final var recentHistory = history.size() > 20
+                    ? history.subList(history.size() - 20, history.size())
+                    : history;
+
+            for (final var entry : recentHistory) {
+                if ("USER".equals(entry.getRole())) {
+                    paramsBuilder.addMessage(ChatCompletionUserMessageParam.builder()
+                            .content(entry.getContent())
+                            .build());
+                } else {
+                    paramsBuilder.addMessage(ChatCompletionAssistantMessageParam.builder()
+                            .content(entry.getContent())
+                            .build());
+                }
+            }
+
+            final var stream = client.chat().completions().createStreaming(paramsBuilder.build());
+
+            final var fullResponse = new StringBuilder();
 
             stream.stream()
                     .flatMap(chunk -> chunk.choices().stream())
@@ -63,11 +107,8 @@ public class PersonalizedAiService {
                         if (delta != null) {
                             delta.content().ifPresent(text -> {
                                 if (!text.isEmpty()) {
-                                    messagingTemplate.convertAndSendToUser(
-                                            sessionId,
-                                            "/queue/chat",
-                                            ChatResponse.chunk(text)
-                                    );
+                                    fullResponse.append(text);
+                                    messagingTemplate.convertAndSend(destination, ChatResponse.chunk(text));
                                 }
                             });
                         }
@@ -75,18 +116,17 @@ public class PersonalizedAiService {
 
             stream.close();
 
-            messagingTemplate.convertAndSendToUser(
-                    sessionId,
-                    "/queue/chat",
-                    ChatResponse.done()
-            );
+            chatHistoryRepository.save(ChatHistory.builder()
+                    .student(student)
+                    .role("ASSISTANT")
+                    .content(fullResponse.toString())
+                    .build());
+
+            messagingTemplate.convertAndSend(destination, ChatResponse.done());
 
         } catch (Exception e) {
-            messagingTemplate.convertAndSendToUser(
-                    sessionId,
-                    "/queue/chat",
-                    ChatResponse.error("Failed to process message: " + e.getMessage())
-            );
+            messagingTemplate.convertAndSend(destination,
+                    ChatResponse.error("Failed to process message: " + e.getMessage()));
         }
     }
 
