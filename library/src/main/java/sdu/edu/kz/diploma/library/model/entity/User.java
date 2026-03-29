@@ -2,6 +2,7 @@ package sdu.edu.kz.diploma.library.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import sdu.edu.kz.diploma.library.model.enums.Role;
 
 import java.time.LocalDateTime;
 

@@ -3,7 +3,7 @@ package sdu.edu.kz.diploma.api.syllabus.create;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import sdu.edu.kz.diploma.library.model.entity.Semester;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 import sdu.edu.kz.diploma.library.test.BaseTest;
 
 import java.time.LocalDate;
@@ -23,12 +23,14 @@ class CreateSyllabusApiTest extends BaseTest {
 
     @Test
     void create_returnsSyllabusId() {
+        final var department = creator.department();
+
         final var request = CreateSyllabusRequest.builder()
                 .courseCode(randomizer.code())
                 .title(randomizer.name())
                 .description(randomizer.text())
                 .credits(3)
-                .department(randomizer.name())
+                .departmentId(department.getId())
                 .instructor(randomizer.name())
                 .semester(Semester.FALL)
                 .academicYear("2025-2026")
@@ -61,7 +63,7 @@ class CreateSyllabusApiTest extends BaseTest {
 
         final var id = createSyllabusApi.create(request);
 
-        final var saved = creator.syllabus(); // just to verify repo works
+        final var saved = creator.syllabus();
         assertThat(id).isNotNull();
         assertThat(id).isNotEqualTo(saved.getId());
     }
@@ -80,7 +82,7 @@ class CreateSyllabusApiTest extends BaseTest {
         final var id = createSyllabusApi.create(request);
 
         assertThat(id).isNotNull();
-        final var found = creator.syllabus(); // verifies db is accessible
+        final var found = creator.syllabus();
         assertThat(found).isNotNull();
     }
 }

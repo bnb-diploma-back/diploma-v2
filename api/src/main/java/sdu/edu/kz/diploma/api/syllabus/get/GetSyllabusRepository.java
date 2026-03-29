@@ -2,15 +2,13 @@ package sdu.edu.kz.diploma.api.syllabus.get;
 
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 import sdu.edu.kz.diploma.library.jooq.tables.pojos.WeeklyPlans;
 
 import java.util.List;
 import java.util.Optional;
 
-import static sdu.edu.kz.diploma.library.jooq.Tables.SYLLABI;
-import static sdu.edu.kz.diploma.library.jooq.Tables.WEEKLY_PLANS;
+import static sdu.edu.kz.diploma.library.jooq.Tables.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -64,7 +62,10 @@ public class GetSyllabusRepository {
                 .title(s.title())
                 .description(s.description())
                 .credits(s.credits())
-                .department(s.department())
+                .departmentId(s.departmentId())
+                .departmentName(resolveDepartmentName(s.departmentId()))
+                .majorId(s.majorId())
+                .majorName(resolveMajorName(s.majorId()))
                 .instructor(s.instructor())
                 .prerequisites(s.prerequisites())
                 .objectives(s.objectives())
@@ -91,5 +92,21 @@ public class GetSyllabusRepository {
                 .createdAt(s.createdAt())
                 .updatedAt(s.updatedAt())
                 .build();
+    }
+
+    private String resolveDepartmentName(Long departmentId) {
+        if (departmentId == null) return null;
+        return dsl.select(DEPARTMENTS.NAME)
+                .from(DEPARTMENTS)
+                .where(DEPARTMENTS.ID.eq(departmentId))
+                .fetchOneInto(String.class);
+    }
+
+    private String resolveMajorName(Long majorId) {
+        if (majorId == null) return null;
+        return dsl.select(MAJORS.NAME)
+                .from(MAJORS)
+                .where(MAJORS.ID.eq(majorId))
+                .fetchOneInto(String.class);
     }
 }

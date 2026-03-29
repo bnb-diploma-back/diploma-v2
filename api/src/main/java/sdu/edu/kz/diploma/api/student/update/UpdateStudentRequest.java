@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import sdu.edu.kz.diploma.library.model.entity.Semester;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 
 import java.time.LocalDate;
 import java.util.List;

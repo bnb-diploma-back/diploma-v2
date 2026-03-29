@@ -27,6 +27,7 @@ public class CareerAiInput {
         private String courseCode;
         private String courseTitle;
         private String department;
+        private String major;
         private Integer credits;
         private String expectedGrade;
         private String description;

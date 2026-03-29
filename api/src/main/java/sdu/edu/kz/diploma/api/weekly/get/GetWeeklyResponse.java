@@ -28,7 +28,10 @@ public class GetWeeklyResponse {
         private Long syllabusId;
         private String courseCode;
         private String courseTitle;
-        private String department;
+        private Long departmentId;
+        private String departmentName;
+        private Long majorId;
+        private String majorName;
         private String instructor;
         private Integer credits;
         private String semester;

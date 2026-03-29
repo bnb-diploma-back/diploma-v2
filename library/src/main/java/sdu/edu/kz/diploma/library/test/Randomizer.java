@@ -1,7 +1,7 @@
 package sdu.edu.kz.diploma.library.test;
 
 import org.springframework.stereotype.Component;
-import sdu.edu.kz.diploma.library.model.entity.Semester;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 
 import java.time.LocalDate;
 import java.util.UUID;

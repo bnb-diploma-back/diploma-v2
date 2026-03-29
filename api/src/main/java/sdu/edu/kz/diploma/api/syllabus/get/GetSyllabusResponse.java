@@ -18,7 +18,10 @@ public class GetSyllabusResponse {
     private String title;
     private String description;
     private Integer credits;
-    private String department;
+    private Long departmentId;
+    private String departmentName;
+    private Long majorId;
+    private String majorName;
     private String instructor;
     private String prerequisites;
     private String objectives;

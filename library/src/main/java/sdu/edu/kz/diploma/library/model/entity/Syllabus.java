@@ -2,6 +2,7 @@ package sdu.edu.kz.diploma.library.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +34,13 @@ public class Syllabus {
     @Column(nullable = false)
     private Integer credits;
 
-    private String department;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
+    private Major major;
 
     private String instructor;
 

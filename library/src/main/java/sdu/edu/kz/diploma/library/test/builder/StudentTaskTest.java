@@ -1,6 +1,8 @@
 package sdu.edu.kz.diploma.library.test.builder;
 
 import sdu.edu.kz.diploma.library.model.entity.*;
+import sdu.edu.kz.diploma.library.model.enums.TaskStatus;
+import sdu.edu.kz.diploma.library.model.enums.TaskType;
 import sdu.edu.kz.diploma.library.test.Randomizer;
 
 import java.time.LocalDate;

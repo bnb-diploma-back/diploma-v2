@@ -1,7 +1,9 @@
 package sdu.edu.kz.diploma.library.test;
 
 import org.springframework.stereotype.Component;
-import sdu.edu.kz.diploma.library.model.entity.Semester;
+import sdu.edu.kz.diploma.library.model.entity.Department;
+import sdu.edu.kz.diploma.library.model.entity.Major;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 
 import java.time.LocalDate;
 
@@ -32,9 +34,15 @@ public class Editor extends AbstractEntityAction {
         syllabusTestRepository.save(syllabus);
     }
 
-    public void updateDepartment(Long id, String department) {
+    public void updateDepartment(Long id, Department department) {
         final var syllabus = syllabusTestRepository.findById(id).orElseThrow();
         syllabus.setDepartment(department);
+        syllabusTestRepository.save(syllabus);
+    }
+
+    public void updateMajor(Long id, Major major) {
+        final var syllabus = syllabusTestRepository.findById(id).orElseThrow();
+        syllabus.setMajor(major);
         syllabusTestRepository.save(syllabus);
     }
 

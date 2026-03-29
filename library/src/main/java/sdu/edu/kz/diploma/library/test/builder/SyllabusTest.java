@@ -1,6 +1,8 @@
 package sdu.edu.kz.diploma.library.test.builder;
 
-import sdu.edu.kz.diploma.library.model.entity.Semester;
+import sdu.edu.kz.diploma.library.model.entity.Department;
+import sdu.edu.kz.diploma.library.model.entity.Major;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 import sdu.edu.kz.diploma.library.model.entity.Syllabus;
 import sdu.edu.kz.diploma.library.test.Randomizer;
 
@@ -15,7 +17,8 @@ public class SyllabusTest {
     private String title = r.name();
     private String description = r.text();
     private int credits = r.intBetween(1, 6);
-    private String department = r.name();
+    private Department department;
+    private Major major;
     private String instructor = r.name();
     private String prerequisites = r.text();
     private String objectives = r.text();
@@ -49,8 +52,13 @@ public class SyllabusTest {
         return this;
     }
 
-    public SyllabusTest department(String department) {
+    public SyllabusTest department(Department department) {
         this.department = department;
+        return this;
+    }
+
+    public SyllabusTest major(Major major) {
+        this.major = major;
         return this;
     }
 
@@ -95,6 +103,7 @@ public class SyllabusTest {
                 .description(description)
                 .credits(credits)
                 .department(department)
+                .major(major)
                 .instructor(instructor)
                 .prerequisites(prerequisites)
                 .objectives(objectives)

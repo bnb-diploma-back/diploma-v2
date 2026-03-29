@@ -3,8 +3,8 @@ package sdu.edu.kz.diploma.api.weekly.get;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import sdu.edu.kz.diploma.library.model.entity.TaskStatus;
-import sdu.edu.kz.diploma.library.model.entity.TaskType;
+import sdu.edu.kz.diploma.library.model.enums.TaskStatus;
+import sdu.edu.kz.diploma.library.model.enums.TaskType;
 import sdu.edu.kz.diploma.library.test.BaseTest;
 import sdu.edu.kz.diploma.library.test.builder.StudentTaskTest;
 

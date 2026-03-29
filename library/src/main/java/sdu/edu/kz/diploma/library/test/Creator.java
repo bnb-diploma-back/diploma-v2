@@ -8,15 +8,21 @@ import sdu.edu.kz.diploma.library.test.builder.*;
 public class Creator extends AbstractEntityAction {
 
     public Syllabus syllabus() {
-        return syllabusTestRepository.save(new SyllabusTest().build());
+        final var dept = department();
+        final var maj = major(dept);
+        return syllabusTestRepository.save(new SyllabusTest().department(dept).major(maj).build());
     }
 
     public Syllabus syllabusWithWeeklyPlans(int weekCount) {
-        return syllabusTestRepository.save(new SyllabusTest().withWeeklyPlans(weekCount).build());
+        final var dept = department();
+        final var maj = major(dept);
+        return syllabusTestRepository.save(new SyllabusTest().department(dept).major(maj).withWeeklyPlans(weekCount).build());
     }
 
     public Syllabus fullSyllabus() {
-        return syllabusTestRepository.save(new SyllabusTest().withFullWeeklyPlans().build());
+        final var dept = department();
+        final var maj = major(dept);
+        return syllabusTestRepository.save(new SyllabusTest().department(dept).major(maj).withFullWeeklyPlans().build());
     }
 
     public Syllabus syllabus(SyllabusTest builder) {

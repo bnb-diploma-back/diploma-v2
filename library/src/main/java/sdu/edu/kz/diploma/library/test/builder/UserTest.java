@@ -1,6 +1,6 @@
 package sdu.edu.kz.diploma.library.test.builder;
 
-import sdu.edu.kz.diploma.library.model.entity.Role;
+import sdu.edu.kz.diploma.library.model.enums.Role;
 import sdu.edu.kz.diploma.library.model.entity.Student;
 import sdu.edu.kz.diploma.library.model.entity.User;
 import sdu.edu.kz.diploma.library.test.Randomizer;

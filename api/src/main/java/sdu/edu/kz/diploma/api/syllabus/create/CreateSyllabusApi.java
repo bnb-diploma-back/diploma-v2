@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sdu.edu.kz.diploma.library.model.entity.Syllabus;
 import sdu.edu.kz.diploma.library.model.entity.WeeklyPlan;
+import sdu.edu.kz.diploma.library.model.repository.DepartmentRepository;
+import sdu.edu.kz.diploma.library.model.repository.MajorRepository;
 import sdu.edu.kz.diploma.library.model.repository.SyllabusRepository;
 
 @Service
@@ -12,15 +14,28 @@ import sdu.edu.kz.diploma.library.model.repository.SyllabusRepository;
 public class CreateSyllabusApi {
 
     private final SyllabusRepository syllabusRepository;
+    private final DepartmentRepository departmentRepository;
+    private final MajorRepository majorRepository;
 
     @Transactional
     public Long create(CreateSyllabusRequest request) {
+        final var department = request.getDepartmentId() != null
+                ? departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new RuntimeException("Department not found with id: " + request.getDepartmentId()))
+                : null;
+
+        final var major = request.getMajorId() != null
+                ? majorRepository.findById(request.getMajorId())
+                    .orElseThrow(() -> new RuntimeException("Major not found with id: " + request.getMajorId()))
+                : null;
+
         final var syllabus = Syllabus.builder()
                 .courseCode(request.getCourseCode())
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .credits(request.getCredits())
-                .department(request.getDepartment())
+                .department(department)
+                .major(major)
                 .instructor(request.getInstructor())
                 .prerequisites(request.getPrerequisites())
                 .objectives(request.getObjectives())

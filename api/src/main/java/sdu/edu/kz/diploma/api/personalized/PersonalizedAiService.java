@@ -124,8 +124,13 @@ public class PersonalizedAiService {
                     final var syllabus = dsl.selectFrom(SYLLABI)
                             .where(SYLLABI.ID.eq(ss.syllabusId()))
                             .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Syllabi.class);
+                    final var deptName = syllabus.departmentId() != null
+                            ? resolveDepartmentName(syllabus.departmentId()) : "N/A";
+                    final var majorName = syllabus.majorId() != null
+                            ? resolveMajorName(syllabus.majorId()) : "N/A";
                     return syllabus.courseCode() + " - " + syllabus.title()
-                            + " (target: " + ss.expectedGrade() + ", credits: " + syllabus.credits() + ")";
+                            + " (department: " + deptName + ", major: " + majorName
+                            + ", target: " + ss.expectedGrade() + ", credits: " + syllabus.credits() + ")";
                 })
                 .collect(Collectors.joining("\n"));
 

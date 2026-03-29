@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sdu.edu.kz.diploma.api.auth.AuthResponse;
 import sdu.edu.kz.diploma.api.auth.JwtService;
 import sdu.edu.kz.diploma.api.auth.SessionService;
-import sdu.edu.kz.diploma.library.model.entity.Role;
+import sdu.edu.kz.diploma.library.model.enums.Role;
 import sdu.edu.kz.diploma.library.model.entity.User;
 import sdu.edu.kz.diploma.library.model.repository.StudentRepository;
 import sdu.edu.kz.diploma.library.model.repository.UserRepository;

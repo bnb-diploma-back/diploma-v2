@@ -49,7 +49,10 @@ public class GetWeeklyRepository {
                             .syllabusId(syllabus.id())
                             .courseCode(syllabus.courseCode())
                             .courseTitle(syllabus.title())
-                            .department(syllabus.department())
+                            .departmentId(syllabus.departmentId())
+                            .departmentName(resolveDepartmentName(syllabus.departmentId()))
+                            .majorId(syllabus.majorId())
+                            .majorName(resolveMajorName(syllabus.majorId()))
                             .instructor(syllabus.instructor())
                             .credits(syllabus.credits())
                             .semester(syllabus.semester())
@@ -68,6 +71,22 @@ public class GetWeeklyRepository {
                 .weekNumber(weekNumber)
                 .courses(courses)
                 .build());
+    }
+
+    private String resolveDepartmentName(Long departmentId) {
+        if (departmentId == null) return null;
+        return dsl.select(DEPARTMENTS.NAME)
+                .from(DEPARTMENTS)
+                .where(DEPARTMENTS.ID.eq(departmentId))
+                .fetchOneInto(String.class);
+    }
+
+    private String resolveMajorName(Long majorId) {
+        if (majorId == null) return null;
+        return dsl.select(MAJORS.NAME)
+                .from(MAJORS)
+                .where(MAJORS.ID.eq(majorId))
+                .fetchOneInto(String.class);
     }
 
     private GetWeeklyResponse.TaskResponse toTaskResponse(StudentTasks t) {

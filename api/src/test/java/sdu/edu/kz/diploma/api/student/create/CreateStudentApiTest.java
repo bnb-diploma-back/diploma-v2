@@ -3,7 +3,7 @@ package sdu.edu.kz.diploma.api.student.create;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import sdu.edu.kz.diploma.library.model.entity.Semester;
+import sdu.edu.kz.diploma.library.model.enums.Semester;
 import sdu.edu.kz.diploma.library.test.BaseTest;
 
 import java.time.LocalDate;

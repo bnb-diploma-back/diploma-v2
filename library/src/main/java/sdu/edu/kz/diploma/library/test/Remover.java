@@ -13,10 +13,10 @@ public class Remover extends AbstractEntityAction {
         studentSyllabusTestRepository.deleteAll();
         studentCareerTestRepository.deleteAll();
         studentTestRepository.deleteAll();
-        majorTestRepository.deleteAll();
-        departmentTestRepository.deleteAll();
         weeklyPlanTestRepository.deleteAll();
         syllabusTestRepository.deleteAll();
+        majorTestRepository.deleteAll();
+        departmentTestRepository.deleteAll();
     }
 
     public void syllabusById(Long id) {
