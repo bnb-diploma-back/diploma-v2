@@ -49,6 +49,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/v1/syllabi/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/syllabi/**").hasRole("ADMIN")
 
+                        // Parser — public (internal sync tool)
+                        .requestMatchers("/api/v1/parser/**").permitAll()
+
                         // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
