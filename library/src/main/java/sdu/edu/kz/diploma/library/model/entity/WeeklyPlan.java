@@ -19,7 +19,7 @@ public class WeeklyPlan {
     @Column(nullable = false)
     private Integer weekNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String topic;
 
     @Column(columnDefinition = "TEXT")
