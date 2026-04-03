@@ -30,7 +30,6 @@ public class SyncParserApi {
         var updated = 0;
 
         final var curriculumCourses = mongoCurriculumCourseRepository.findAll();
-        log.info("Fetched {} curriculum courses from MongoDB", curriculumCourses.size());
         for (final var course : curriculumCourses) {
             final var result = syncCourse(course.getCourseCode(), course.getCourseName(),
                     course.getCredit(), course.getTerm(), course.getRequisites());
@@ -38,7 +37,6 @@ public class SyncParserApi {
         }
 
         final var electiveCourses = mongoCourseRepository.findAll();
-        log.info("Fetched {} elective courses from MongoDB", electiveCourses.size());
         for (final var course : electiveCourses) {
             final var result = syncCourse(course.getCourseCode(), course.getCourseName(),
                     course.getCredit(), course.getTerm(), null);
@@ -46,7 +44,6 @@ public class SyncParserApi {
         }
 
         final var syllabuses = mongoSyllabusRepository.findAll();
-        log.info("Fetched {} syllabuses from MongoDB", syllabuses.size());
         var enriched = 0;
         for (final var mongoSyllabus : syllabuses) {
             if (enrichSyllabus(mongoSyllabus)) enriched++;
@@ -143,17 +140,17 @@ public class SyncParserApi {
     private void syncWeeklyPlans(Syllabus syllabus, List<Map<String, String>> weeklyPlanRows) {
         syllabus.getWeeklyPlans().clear();
 
-        var weekNumber = 1;
         for (final var row : weeklyPlanRows) {
-            final var topic = row.getOrDefault("Topic", row.getOrDefault("theme", ""));
+            final var topic = row.getOrDefault("Topics", row.getOrDefault("Topic", ""));
             if (topic.isBlank()) continue;
 
+            final var weekStr = row.getOrDefault("Week №", "");
+            final var weekNumber = weekStr.isBlank() ? 0 : Integer.parseInt(weekStr.trim());
+
             final var plan = WeeklyPlan.builder()
-                    .weekNumber(weekNumber++)
+                    .weekNumber(weekNumber)
                     .topic(topic)
-                    .lectureContent(row.getOrDefault("Lecture", row.getOrDefault("lecture", "")))
-                    .practiceContent(row.getOrDefault("Practice", row.getOrDefault("practice", "")))
-                    .assignments(row.getOrDefault("Assignment", row.getOrDefault("SRO", "")))
+                    .assignments(row.getOrDefault("Activity", ""))
                     .build();
             syllabus.addWeeklyPlan(plan);
         }
