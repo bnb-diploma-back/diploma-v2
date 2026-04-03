@@ -27,6 +27,15 @@ services:
       - "5432:5432"
     depends_on:
       - config-server
+
+  mongodb:
+    image: mongo:7.0
+    container_name: sdu-parser-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
   test_db:
     container_name: bnb_test_db
     image: eatcodepray/bnb-diploma-migration:test
@@ -35,3 +44,6 @@ services:
       - "5433:5432"
     depends_on:
       - config-server
+
+volumes:
+  mongo-data:
