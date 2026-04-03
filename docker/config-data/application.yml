@@ -1,4 +1,7 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/MongoLocal_2_uri
   datasource:
     username: postgres
     password: postgres
