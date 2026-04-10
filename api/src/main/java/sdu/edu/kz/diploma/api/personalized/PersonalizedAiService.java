@@ -73,7 +73,7 @@ public class PersonalizedAiService {
                     """ + studentContext;
 
             final var paramsBuilder = ChatCompletionCreateParams.builder()
-                    .model("gpt-4o")
+                    .model("gpt-5.4")
                     .maxCompletionTokens(2048)
                     .addMessage(ChatCompletionSystemMessageParam.builder()
                             .content(systemPrompt)

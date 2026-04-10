@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/sdu_parser_test
+  datasource:
+    url: jdbc:postgresql://localhost:5433/bnb_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+
+eureka:
+  client:
+    enabled: false
+
+openai:
+  api-key: test-key
+
+jwt:
+  secret: test-secret-key-that-is-at-least-256-bits-long-for-hs256-algorithm
+  expiration: 86400000
