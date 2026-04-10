@@ -4,6 +4,19 @@ plugins {
 	id 'java'
 }
 
+bootBuildImage {
+	if (!project.hasProperty("dockerImageTag")) {
+		ext.dockerImageTag = "latest"
+	}
+
+	builder = "paketobuildpacks/builder-jammy-tiny"
+	createdDate = "now"
+	imageName = "bnb-diploma-backend:${dockerImageTag}"
+	environment = ["BP_NATIVE_IMAGE": "false",
+				   "BP_JVM_VERSION" : "25"]
+}
+
+
 dependencies {
 	implementation project(':api')
 	implementation project(':library')
