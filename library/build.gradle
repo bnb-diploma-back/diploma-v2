@@ -13,10 +13,14 @@ dependencies {
 	jooqCodegen 'org.postgresql:postgresql'
 }
 
+def skipJooq = project.hasProperty('skipJooqCodegen') || System.getenv('DYNO') != null
+
 sourceSets {
 	main {
 		java {
-			srcDir layout.buildDirectory.dir('generated-sources/jooq')
+			srcDir skipJooq
+					? layout.projectDirectory.dir('src/main/jooq-generated')
+					: layout.buildDirectory.dir('generated-sources/jooq')
 		}
 	}
 }
@@ -54,12 +58,18 @@ jooq {
 
 			target {
 				packageName = 'sdu.edu.kz.diploma.library.jooq'
-				directory = layout.buildDirectory.dir('generated-sources/jooq').get().asFile.absolutePath
+				directory = layout.projectDirectory.dir('src/main/jooq-generated').asFile.absolutePath
 			}
 		}
 	}
 }
 
-tasks.named('compileJava') {
-	dependsOn tasks.named('jooqCodegen')
+if (skipJooq) {
+	tasks.named('compileJava') {
+		// Skip jooqCodegen when no DB available (e.g. Heroku build)
+	}
+} else {
+	tasks.named('compileJava') {
+		dependsOn tasks.named('jooqCodegen')
+	}
 }

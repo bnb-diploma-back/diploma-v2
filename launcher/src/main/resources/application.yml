@@ -1,10 +1,6 @@
 spring:
   application:
     name: diploma
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/MongoLocal_2_uri
-      database: MongoLocal_2_uri
   datasource:
     driver-class-name: org.postgresql.Driver
   jpa:

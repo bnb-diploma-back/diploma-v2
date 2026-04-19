@@ -13,13 +13,27 @@ ext {
 	set('jooq.version', '3.20.11')
 }
 
+tasks.register('stage') {
+	dependsOn ':launcher:build'
+}
+
+gradle.taskGraph.whenReady {
+	if (project.hasProperty('skipJooqCodegen')) {
+		subprojects.each { sub ->
+			sub.tasks.matching { it.name == 'test' }.configureEach {
+				enabled = false
+			}
+		}
+	}
+}
+
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'io.spring.dependency-management'
 
 	java {
 		toolchain {
-			languageVersion = JavaLanguageVersion.of(25)
+			languageVersion = JavaLanguageVersion.of(Integer.parseInt(project.findProperty('javaVersion') ?: '21'))
 		}
 	}
 

@@ -1,10 +1,9 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     config:
       enabled: false
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/sdu_parser_test
   datasource:
     url: jdbc:postgresql://localhost:5433/bnb_db
     username: postgres

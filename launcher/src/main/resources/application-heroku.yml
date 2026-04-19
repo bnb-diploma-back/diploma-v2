@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  client:
+    enabled: false
+
+server:
+  port: ${PORT:8080}
+
+openai:
+  api-key: ${OPENAI_API_KEY:}
