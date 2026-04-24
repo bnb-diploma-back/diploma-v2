@@ -29,3 +29,7 @@ resend:
 
 cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS:https://diploma-ui-881ce33bc920.herokuapp.com}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
