@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<h2>WebSocket Chat Test</h2>
+<div>
+    <label>Student ID: <input id="studentId" value="1" /></label>
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+</div>
+<div>
+    <input id="message" placeholder="Type a message..." style="width:400px" />
+    <button onclick="send()">Send</button>
+</div>
+<pre id="log" style="background:#f0f0f0; padding:10px; height:400px; overflow:auto;"></pre>
+
+<script>
+    let client;
+    // Client generates its own session ID — guaranteed to match subscribe and send
+    const sessionId = 'chat-' + Math.random().toString(36).substring(2, 10);
+
+    const log = (msg) => {
+        document.getElementById('log').textContent += new Date().toLocaleTimeString() + ' | ' + msg + '\n';
+        document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
+    };
+
+    function connect() {
+        const sock = new SockJS('http://localhost:8070/ws/chat');
+        client = new StompJs.Client({
+            webSocketFactory: () => sock,
+            debug: (str) => log('[STOMP] ' + str),
+            onConnect: () => {
+                log('Connected! Session: ' + sessionId);
+
+                client.subscribe('/topic/chat/' + sessionId, (msg) => {
+                    const resp = JSON.parse(msg.body);
+                    if (resp.type === 'CHUNK') log('CHUNK: ' + resp.content);
+                    else if (resp.type === 'DONE') log('DONE');
+                    else if (resp.type === 'ERROR') log('ERROR: ' + resp.content);
+                });
+            },
+            onStompError: (frame) => log('STOMP error: ' + frame.headers?.message),
+            onWebSocketClose: () => log('WebSocket closed'),
+        });
+        client.activate();
+    }
+
+    function send() {
+        const studentId = document.getElementById('studentId').value;
+        const message = document.getElementById('message').value;
+        log('Sending: ' + message);
+        client.publish({
+            destination: '/app/chat',
+            body: JSON.stringify({ studentId: parseInt(studentId), message, sessionId }),
+        });
+        document.getElementById('message').value = '';
+    }
+
+    function disconnect() {
+        client?.deactivate();
+        log('Disconnected');
+    }
+</script>
+</body>
+</html>

@@ -40,6 +40,13 @@ public class User {
     @JoinColumn(name = "student_id", unique = true)
     private Student student;
 
+    @Builder.Default
+    private boolean emailVerified = false;
+
+    private String verificationCode;
+
+    private LocalDateTime verificationCodeExpiresAt;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

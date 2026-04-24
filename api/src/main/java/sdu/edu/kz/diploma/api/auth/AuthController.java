@@ -15,6 +15,9 @@ import sdu.edu.kz.diploma.api.auth.login.LoginApi;
 import sdu.edu.kz.diploma.api.auth.login.LoginRequest;
 import sdu.edu.kz.diploma.api.auth.register.RegisterApi;
 import sdu.edu.kz.diploma.api.auth.register.RegisterRequest;
+import sdu.edu.kz.diploma.api.auth.verify.ResendCodeApi;
+import sdu.edu.kz.diploma.api.auth.verify.VerifyEmailApi;
+import sdu.edu.kz.diploma.api.auth.verify.VerifyEmailRequest;
 import sdu.edu.kz.diploma.library.model.entity.User;
 
 @RestController
@@ -26,6 +29,8 @@ public class AuthController {
     private final RegisterApi registerApi;
     private final LoginApi loginApi;
     private final SessionService sessionService;
+    private final VerifyEmailApi verifyEmailApi;
+    private final ResendCodeApi resendCodeApi;
 
     @PostMapping("/register")
     @Operation(
@@ -74,6 +79,34 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request,
                                                HttpServletRequest httpRequest) {
         return ResponseEntity.ok(loginApi.login(request, httpRequest));
+    }
+
+    @PostMapping("/verify")
+    @Operation(
+            summary = "Verify email",
+            description = "Verifies the user's email with the 6-digit code sent on registration.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Email verified successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid or expired code")
+            }
+    )
+    public ResponseEntity<Void> verify(@Valid @RequestBody VerifyEmailRequest request) {
+        verifyEmailApi.verify(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/resend-code")
+    @Operation(
+            summary = "Resend verification code",
+            description = "Sends a new 6-digit verification code to the given email address.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Code sent"),
+                    @ApiResponse(responseCode = "400", description = "Email already verified or not found")
+            }
+    )
+    public ResponseEntity<Void> resendCode(@RequestParam String email) {
+        resendCodeApi.resend(email);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/logout")

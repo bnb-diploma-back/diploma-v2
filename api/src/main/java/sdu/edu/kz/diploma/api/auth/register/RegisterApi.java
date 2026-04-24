@@ -6,12 +6,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sdu.edu.kz.diploma.api.auth.AuthResponse;
+import sdu.edu.kz.diploma.api.auth.EmailService;
 import sdu.edu.kz.diploma.api.auth.JwtService;
 import sdu.edu.kz.diploma.api.auth.SessionService;
+import sdu.edu.kz.diploma.api.auth.verify.ResendCodeApi;
 import sdu.edu.kz.diploma.library.model.enums.Role;
 import sdu.edu.kz.diploma.library.model.entity.User;
 import sdu.edu.kz.diploma.library.model.repository.StudentRepository;
 import sdu.edu.kz.diploma.library.model.repository.UserRepository;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class RegisterApi {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final SessionService sessionService;
+    private final EmailService emailService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request, HttpServletRequest httpRequest) {
@@ -29,12 +34,17 @@ public class RegisterApi {
             throw new RuntimeException("Email already registered: " + request.getEmail());
         }
 
+        final var code = ResendCodeApi.generateCode();
+
         final var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.STUDENT)
+                .emailVerified(false)
+                .verificationCode(code)
+                .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15))
                 .build();
 
         if (request.getStudentId() != null) {
@@ -52,6 +62,8 @@ public class RegisterApi {
                 httpRequest.getRemoteAddr(),
                 httpRequest.getHeader("User-Agent")
         );
+
+        emailService.sendVerificationCode(saved.getEmail(), saved.getFirstName(), code);
 
         return toResponse(saved, token);
     }

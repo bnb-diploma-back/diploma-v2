@@ -45,6 +45,9 @@ management:
 openai:
   api-key: hidden
 
+resend:
+  api-key: ${RESEND_API_KEY:local-dev}
+
 springdoc:
   api-docs:
     path: /api-docs
