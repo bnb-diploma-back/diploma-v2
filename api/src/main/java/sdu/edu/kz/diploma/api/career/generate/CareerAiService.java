@@ -75,7 +75,7 @@ public class CareerAiService {
 
         final var completion = client.chat().completions().create(
                 ChatCompletionCreateParams.builder()
-                        .model("gpt-5.4")
+                        .model("gpt-4o")
                         .maxCompletionTokens(4096)
                         .addMessage(ChatCompletionSystemMessageParam.builder()
                                 .content(systemPrompt)
