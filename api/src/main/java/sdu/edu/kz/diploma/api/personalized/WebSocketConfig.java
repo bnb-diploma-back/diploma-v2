@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws/chat")
-                .setAllowedOriginPatterns("http://localhost:5173", "https://diploma-ui-881ce33bc920.herokuapp.com")
+                .setAllowedOriginPatterns("http://localhost:5173", "https://diploma-ui-881ce33bc920.herokuapp.com", "https://www.brainb.kz", "https://brainb.kz")
                 .withSockJS();
     }
 }
