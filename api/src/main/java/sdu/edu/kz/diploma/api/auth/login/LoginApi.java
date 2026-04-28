@@ -22,10 +22,10 @@ public class LoginApi {
     @Transactional
     public AuthResponse login(LoginRequest request, HttpServletRequest httpRequest) {
         final var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.BadRequestException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new sdu.edu.kz.diploma.api.exception.BadRequestException("Invalid email or password");
         }
 
         final var token = jwtService.generateToken(user);

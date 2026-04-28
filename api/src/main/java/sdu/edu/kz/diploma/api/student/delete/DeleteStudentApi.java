@@ -14,7 +14,7 @@ public class DeleteStudentApi {
     @Transactional
     public void delete(Long id) {
         if (!studentRepository.existsById(id)) {
-            throw new RuntimeException("Student not found with id: " + id);
+            throw new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + id);
         }
         studentRepository.deleteById(id);
     }

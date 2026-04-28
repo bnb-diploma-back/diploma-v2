@@ -32,7 +32,7 @@ public class EmailService {
             log.info("Verification email sent to {}", toEmail);
         } catch (Exception e) {
             log.error("Failed to send verification email to {}: {}", toEmail, e.getMessage());
-            throw new RuntimeException("Failed to send verification email");
+            throw new sdu.edu.kz.diploma.api.exception.ServiceException("Failed to send verification email", e);
         }
     }
 

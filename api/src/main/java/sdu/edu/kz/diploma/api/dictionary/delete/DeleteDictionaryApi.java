@@ -16,7 +16,7 @@ public class DeleteDictionaryApi {
     @Transactional
     public void deleteDepartment(Long id) {
         if (!departmentRepository.existsById(id)) {
-            throw new RuntimeException("Department not found with id: " + id);
+            throw new sdu.edu.kz.diploma.api.exception.NotFoundException("Department not found with id: " + id);
         }
         departmentRepository.deleteById(id);
     }
@@ -24,7 +24,7 @@ public class DeleteDictionaryApi {
     @Transactional
     public void deleteMajor(Long id) {
         if (!majorRepository.existsById(id)) {
-            throw new RuntimeException("Major not found with id: " + id);
+            throw new sdu.edu.kz.diploma.api.exception.NotFoundException("Major not found with id: " + id);
         }
         majorRepository.deleteById(id);
     }

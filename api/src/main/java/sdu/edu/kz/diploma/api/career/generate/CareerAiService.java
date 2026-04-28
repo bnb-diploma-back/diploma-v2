@@ -93,7 +93,7 @@ public class CareerAiService {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize career input", e);
+            throw new sdu.edu.kz.diploma.api.exception.ServiceException("Failed to serialize career input", e);
         }
     }
 }

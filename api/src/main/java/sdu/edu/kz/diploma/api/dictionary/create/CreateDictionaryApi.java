@@ -29,7 +29,7 @@ public class CreateDictionaryApi {
     @Transactional
     public Long createMajor(CreateMajorRequest request) {
         final var department = departmentRepository.findById(request.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + request.getDepartmentId()));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Department not found with id: " + request.getDepartmentId()));
 
         final var major = Major.builder()
                 .code(request.getCode())

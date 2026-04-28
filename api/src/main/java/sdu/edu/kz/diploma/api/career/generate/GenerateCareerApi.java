@@ -31,7 +31,7 @@ public class GenerateCareerApi {
                 .fetchOneInto(sdu.edu.kz.diploma.library.jooq.tables.pojos.Students.class);
 
         if (student == null) {
-            throw new RuntimeException("Student not found with id: " + studentId);
+            throw new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + studentId);
         }
 
         final var studentSyllabi = dsl.selectFrom(STUDENT_SYLLABI)
@@ -80,7 +80,7 @@ public class GenerateCareerApi {
 
     private void saveCareerCards(Long studentId, List<GenerateCareerResponse.CareerCardResponse> cards) {
         final var studentEntity = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + studentId));
 
         studentEntity.getStudentCareers().clear();
         studentRepository.save(studentEntity);
@@ -117,7 +117,7 @@ public class GenerateCareerApi {
         try {
             return objectMapper.readValue(aiResponseJson, GenerateCareerResponse.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to parse AI career response", e);
+            throw new sdu.edu.kz.diploma.api.exception.ServiceException("Failed to parse AI career response", e);
         }
     }
 }

@@ -14,7 +14,7 @@ public class DeleteSyllabusApi {
     @Transactional
     public void delete(Long id) {
         if (!syllabusRepository.existsById(id)) {
-            throw new RuntimeException("Syllabus not found with id: " + id);
+            throw new sdu.edu.kz.diploma.api.exception.NotFoundException("Syllabus not found with id: " + id);
         }
         syllabusRepository.deleteById(id);
     }

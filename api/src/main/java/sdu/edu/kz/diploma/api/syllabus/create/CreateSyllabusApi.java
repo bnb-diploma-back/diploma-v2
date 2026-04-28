@@ -21,12 +21,12 @@ public class CreateSyllabusApi {
     public Long create(CreateSyllabusRequest request) {
         final var department = request.getDepartmentId() != null
                 ? departmentRepository.findById(request.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("Department not found with id: " + request.getDepartmentId()))
+                    .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Department not found with id: " + request.getDepartmentId()))
                 : null;
 
         final var major = request.getMajorId() != null
                 ? majorRepository.findById(request.getMajorId())
-                    .orElseThrow(() -> new RuntimeException("Major not found with id: " + request.getMajorId()))
+                    .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Major not found with id: " + request.getMajorId()))
                 : null;
 
         final var syllabus = Syllabus.builder()

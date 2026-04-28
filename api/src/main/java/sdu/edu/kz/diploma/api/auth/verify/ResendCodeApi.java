@@ -19,10 +19,10 @@ public class ResendCodeApi {
     @Transactional
     public void resend(String email) {
         final var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("User not found"));
 
         if (user.isEmailVerified()) {
-            throw new RuntimeException("Email already verified");
+            throw new sdu.edu.kz.diploma.api.exception.BadRequestException("Email already verified");
         }
 
         final var code = generateCode();

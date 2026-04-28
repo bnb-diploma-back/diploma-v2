@@ -19,16 +19,16 @@ public class UpdateSyllabusApi {
     @Transactional
     public void update(Long id, UpdateSyllabusRequest request) {
         final var syllabus = syllabusRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Syllabus not found with id: " + id));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Syllabus not found with id: " + id));
 
         final var department = request.getDepartmentId() != null
                 ? departmentRepository.findById(request.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("Department not found with id: " + request.getDepartmentId()))
+                    .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Department not found with id: " + request.getDepartmentId()))
                 : null;
 
         final var major = request.getMajorId() != null
                 ? majorRepository.findById(request.getMajorId())
-                    .orElseThrow(() -> new RuntimeException("Major not found with id: " + request.getMajorId()))
+                    .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Major not found with id: " + request.getMajorId()))
                 : null;
 
         syllabus.setCourseCode(request.getCourseCode());

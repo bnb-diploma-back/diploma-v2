@@ -22,16 +22,16 @@ public class UpdateStudentApi {
     @Transactional
     public void update(Long id, UpdateStudentRequest request) {
         final var student = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + id));
 
         final var department = request.getDepartmentId() != null
                 ? departmentRepository.findById(request.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("Department not found with id: " + request.getDepartmentId()))
+                    .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Department not found with id: " + request.getDepartmentId()))
                 : null;
 
         final var major = request.getMajorId() != null
                 ? majorRepository.findById(request.getMajorId())
-                    .orElseThrow(() -> new RuntimeException("Major not found with id: " + request.getMajorId()))
+                    .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Major not found with id: " + request.getMajorId()))
                 : null;
 
         student.setFirstName(request.getFirstName());
@@ -50,7 +50,7 @@ public class UpdateStudentApi {
         if (request.getStudentSyllabi() != null) {
             request.getStudentSyllabi().forEach(ssRequest -> {
                 final var syllabus = syllabusRepository.findById(ssRequest.getSyllabusId())
-                        .orElseThrow(() -> new RuntimeException("Syllabus not found with id: " + ssRequest.getSyllabusId()));
+                        .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Syllabus not found with id: " + ssRequest.getSyllabusId()));
                 final var studentSyllabus = StudentSyllabus.builder()
                         .syllabus(syllabus)
                         .expectedGrade(ssRequest.getExpectedGrade())

@@ -13,6 +13,6 @@ public class GetDashboardApi {
 
     public GetDashboardResponse findByStudentId(Long studentId, Integer currentWeek) {
         return repository.findByStudentId(studentId, currentWeek)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + studentId));
     }
 }

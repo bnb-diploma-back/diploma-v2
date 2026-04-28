@@ -15,6 +15,11 @@ import sdu.edu.kz.diploma.library.model.entity.User;
 import sdu.edu.kz.diploma.library.model.repository.StudentRepository;
 import sdu.edu.kz.diploma.library.model.repository.UserRepository;
 
+import sdu.edu.kz.diploma.api.exception.BadRequestException;
+import sdu.edu.kz.diploma.api.exception.ConflictException;
+import sdu.edu.kz.diploma.api.exception.NotFoundException;
+import sdu.edu.kz.diploma.api.exception.ServiceException;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -31,11 +36,11 @@ public class RegisterApi {
     @Transactional
     public AuthResponse register(RegisterRequest request, HttpServletRequest httpRequest) {
         if (!request.getEmail().endsWith("@sdu.edu.kz")) {
-            throw new RuntimeException("Only @sdu.edu.kz emails are allowed");
+            throw new BadRequestException("Only @sdu.edu.kz emails are allowed");
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered: " + request.getEmail());
+            throw new ConflictException("Email already registered: " + request.getEmail());
         }
 
         final var code = ResendCodeApi.generateCode();
@@ -53,7 +58,7 @@ public class RegisterApi {
 
         if (request.getStudentId() != null) {
             final var student = studentRepository.findById(request.getStudentId())
-                    .orElseThrow(() -> new RuntimeException("Student not found with id: " + request.getStudentId()));
+                    .orElseThrow(() -> new NotFoundException("Student not found with id: " + request.getStudentId()));
             user.setStudent(student);
         }
 
@@ -75,7 +80,7 @@ public class RegisterApi {
     @Transactional
     public AuthResponse registerAdmin(RegisterRequest request, HttpServletRequest httpRequest) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered: " + request.getEmail());
+            throw new ConflictException("Email already registered: " + request.getEmail());
         }
 
         final var user = User.builder()

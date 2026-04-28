@@ -132,7 +132,7 @@ public class WeeklyAiService {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize weekly data", e);
+            throw new sdu.edu.kz.diploma.api.exception.ServiceException("Failed to serialize weekly data", e);
         }
     }
 }

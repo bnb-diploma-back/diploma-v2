@@ -19,11 +19,11 @@ public class GetSyllabusApi {
 
     public GetSyllabusResponse findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Syllabus not found with id: " + id));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Syllabus not found with id: " + id));
     }
 
     public GetSyllabusResponse findByCourseCode(String courseCode) {
         return repository.findByCourseCode(courseCode)
-                .orElseThrow(() -> new RuntimeException("Syllabus not found with course code: " + courseCode));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Syllabus not found with course code: " + courseCode));
     }
 }

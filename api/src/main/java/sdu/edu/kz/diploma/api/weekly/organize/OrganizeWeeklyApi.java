@@ -28,7 +28,7 @@ public class OrganizeWeeklyApi {
         final var aiResponseJson = weeklyAiService.generateOrganizer(weeklyData);
 
         final var student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + studentId));
 
         final var existing = weeklyOrganizerRepository.findByStudentIdAndWeekNumber(studentId, weekNumber);
         if (existing.isPresent()) {
@@ -50,7 +50,7 @@ public class OrganizeWeeklyApi {
     @Transactional(readOnly = true)
     public OrganizeWeeklyResponse getOrganized(Long studentId, Integer weekNumber) {
         final var organizer = weeklyOrganizerRepository.findByStudentIdAndWeekNumber(studentId, weekNumber)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException(
                         "No organizer found for student " + studentId + " week " + weekNumber +
                                 ". Call POST to generate one first."));
 
@@ -65,7 +65,7 @@ public class OrganizeWeeklyApi {
             response.setGeneratedAt(LocalDateTime.now());
             return response;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to parse AI response", e);
+            throw new sdu.edu.kz.diploma.api.exception.ServiceException("Failed to parse AI response", e);
         }
     }
 }

@@ -16,7 +16,7 @@ public class VerifyEmailApi {
     @Transactional
     public void verify(VerifyEmailRequest request) {
         final var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("User not found"));
 
         if (user.isEmailVerified()) {
             return;
@@ -24,12 +24,12 @@ public class VerifyEmailApi {
 
         if (user.getVerificationCode() == null
                 || !user.getVerificationCode().equals(request.getCode())) {
-            throw new RuntimeException("Invalid verification code");
+            throw new sdu.edu.kz.diploma.api.exception.BadRequestException("Invalid verification code");
         }
 
         if (user.getVerificationCodeExpiresAt() == null
                 || user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Verification code has expired");
+            throw new sdu.edu.kz.diploma.api.exception.BadRequestException("Verification code has expired");
         }
 
         user.setEmailVerified(true);

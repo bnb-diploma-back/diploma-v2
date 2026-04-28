@@ -19,11 +19,11 @@ public class GetStudentApi {
 
     public GetStudentResponse findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with id: " + id));
     }
 
     public GetStudentResponse findByStudentId(String studentId) {
         return repository.findByStudentId(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with student id: " + studentId));
+                .orElseThrow(() -> new sdu.edu.kz.diploma.api.exception.NotFoundException("Student not found with student id: " + studentId));
     }
 }
