@@ -35,8 +35,8 @@ public class RegisterApi {
 
     @Transactional
     public AuthResponse register(RegisterRequest request, HttpServletRequest httpRequest) {
-        if (!request.getEmail().endsWith("@sdu.edu.kz")) {
-            throw new BadRequestException("Only @sdu.edu.kz emails are allowed");
+        if (!request.getEmail().endsWith("@sdu.edu.kz") && !request.getEmail().endsWith("@stu.sdu.edu.kz")) {
+            throw new BadRequestException("Only @sdu.edu.kz and @stu.sdu.edu.kz emails are allowed");
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
