@@ -45,7 +45,7 @@ public class WeeklyPlans extends TableImpl<Record> {
 
     public final TableField<Record, Integer> WEEK_NUMBER = createField(DSL.name("week_number"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    public final TableField<Record, String> TOPIC = createField(DSL.name("topic"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<Record, String> TOPIC = createField(DSL.name("topic"), SQLDataType.CLOB.nullable(false), this, "");
 
     public final TableField<Record, String> LEARNING_OBJECTIVES = createField(DSL.name("learning_objectives"), SQLDataType.CLOB, this, "");
 
